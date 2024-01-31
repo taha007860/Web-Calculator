@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.calculator {
+    width: 240px;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.result {
+    grid-column: span 4;
+    margin-bottom: 10px;
+    height: 30px;
+    text-align: right;
+    padding-right: 10px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+button {
+    width: 100%;
+    height: 45px;
+    background-color: lightblue;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: blue;
+    color: white;
+}
+
+</style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="result" id="result">0</div>
+    <button onclick="clearResult()">C</button>
+    <button onclick="clearEntry()">CE</button>
+    <button onclick="addOperator('/')">/</button>
+    <button onclick="addNumber(7)">7</button>
+    <button onclick="addNumber(8)">8</button>
+    <button onclick="addNumber(9)">9</button>
+    <button onclick="addOperator('*')">*</button>
+    <button onclick="addNumber(4)">4</button>
+    <button onclick="addNumber(5)">5</button>
+    <button onclick="addNumber(6)">6</button>
+    <button onclick="addOperator('-')">-</button>
+    <button onclick="addNumber(1)">1</button>
+    <button onclick="addNumber(2)">2</button>
+    <button onclick="addNumber(3)">3</button>
+    <button onclick="addOperator('+')">+</button>
+    <button onclick="addNumber(0)">0</button>
+    <button onclick="addDecimal('.')">.</button>
+    <button onclick="calculateResult()">=</button>
+</div>
+
+<script>
+let operation = '';
+let operand1 = 0;
+let operand2 = null;
+
+function updateResult(value) {
+    document.getElementById('result').textContent = value;
+}
+
+function addNumber(number) {
+    const resultElement = document.getElementById('result');
+    if (resultElement.textContent === '0' || resultElement.textContent === 'Error') {
+        updateResult(number);
+    } else {
+        updateResult(resultElement.textContent + number);
+    }
+}
+
+function addDecimal(decimal) {
+    const resultElement = document.getElementById('result');
+    if (!resultElement.textContent.includes(decimal)) {
+        updateResult(resultElement.textContent + decimal);
+    }
+}
+
+function addOperator(operator) {
+    const resultElement = document.getElementById('result');
+    operand1 = parseFloat(resultElement.textContent);
+    operation = operator;
+    updateResult('0');
+}
+
+function calculateResult() {
+    const resultElement = document.getElementById('result');
+    operand2 = parseFloat(resultElement.textContent);
+
+    if (isNaN(operand2) || operand2 === 0) {
+        updateResult('Error');
+    } else {
+        let result = 0;
+
+        switch (operation) {
+            case '+':
+                result = operand1 + operand2;
+                break;
+            case '-':
+                result = operand1 - operand2;
+                break;
+            case '*':
+                result = operand1 * operand2;
+                break;
+            case '/':
+                result = operand1 / operand2;
+                break;
+        }
+
+        updateResult(result);
+    }
+}
+
+function clearResult() {
+    operand1 = 0;
+    operand2 = null;
+    operation = '';
+    updateResult('0');
+}
+
+function clearEntry() {
+    updateResult('0');
+}
+</script>
+
+</body>
+</html>
